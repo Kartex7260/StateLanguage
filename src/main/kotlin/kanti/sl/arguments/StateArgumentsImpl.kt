@@ -6,6 +6,9 @@ class StateArgumentsImpl(
 
 	private val statesMap: Map<String, StateArgument>
 
+	override val arguments: List<StateArgument>
+		get() = statesMap.values.toList()
+
 	init {
 		statesMap = buildMap {
 			for (arg in arguments) {
@@ -16,10 +19,6 @@ class StateArgumentsImpl(
 
 	override operator fun get(key: String): StateArgument? {
 		return statesMap[key]
-	}
-
-	override fun iterator(): Iterator<StateArgument> {
-		return statesMap.values.iterator()
 	}
 
 }

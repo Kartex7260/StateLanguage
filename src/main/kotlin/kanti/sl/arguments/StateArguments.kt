@@ -1,6 +1,8 @@
 package kanti.sl.arguments
 
-interface StateArguments : Iterable<StateArgument> {
+interface StateArguments {
+
+	val arguments: List<StateArgument>
 
 	operator fun get(key: String): StateArgument?
 
