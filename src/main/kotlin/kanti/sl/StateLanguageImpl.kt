@@ -45,8 +45,8 @@ class StateLanguageImpl private constructor(
 		override fun build(): StateLanguage {
 			return StateLanguageImpl(
 				converters = converterMap,
-				serializer = stateSerializer?.builder()
-					?: StateObjectSerializer.builder().builder()
+				serializer = stateSerializer?.build()
+					?: StateObjectSerializer.builder().build()
 			)
 		}
 	}

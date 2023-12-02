@@ -91,7 +91,7 @@ class StateObjectSerializerImpl(
 			return this
 		}
 
-		override fun builder(): StateObjectSerializer {
+		override fun build(): StateObjectSerializer {
 			return StateObjectSerializerImpl(
 				nameArgsSeparator = nameArgsSeparator ?: defaultNameArgsSeparator,
 				argsSeparator = argsSeparator ?: defaultArgsSeparator,

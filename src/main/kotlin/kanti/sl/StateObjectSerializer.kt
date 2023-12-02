@@ -18,7 +18,7 @@ interface StateObjectSerializer {
 
 		fun setValueConverter(builder: ValueConverter.Builder?): Builder
 
-		fun builder(): StateObjectSerializer
+		fun build(): StateObjectSerializer
 
 	}
 
