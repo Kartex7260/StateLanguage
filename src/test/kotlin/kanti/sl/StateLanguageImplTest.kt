@@ -3,11 +3,8 @@ package kanti.sl
 import kanti.sl.arguments.MutableStateArgument
 import kanti.sl.arguments.MutableStateArguments
 import kanti.sl.arguments.StateArguments
-import kanti.sl.objects.MutableStateObject
-import kanti.sl.objects.StateObject
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 
 class StateLanguageImplTest {
 
@@ -19,7 +16,7 @@ class StateLanguageImplTest {
 	fun parse() {
 		val user = User("Jojo", 1000)
 		val stg = sl.from(user.javaClass, user)
-		assertEquals(
+		Assertions.assertEquals(
 			"User:name=Jojo,age=1000",
 			stg
 		)
@@ -29,7 +26,7 @@ class StateLanguageImplTest {
 	fun from() {
 		val line = "User:name=Jojo,age=1000"
 		val parsed = sl.parse(User::class.java, line)
-		assertEquals(
+		Assertions.assertEquals(
 			User("Jojo", 1000),
 			parsed
 		)
@@ -37,20 +34,16 @@ class StateLanguageImplTest {
 
 }
 
-private object UserObjectConverter : StateObjectConverter<User> {
+private object UserObjectConverter : StateObjectConverter {
 
-	override fun convert(arguments: MutableStateArguments, state: User) {
+	override fun convert(arguments: MutableStateArguments, state: Any) {
+		if (state !is User)
+			return
 		arguments.put(
-			MutableStateArgument.create(
-				name = "name",
-				value = state.name
-			)
+			MutableStateArgument.create("name", state.name)
 		)
 		arguments.put(
-			MutableStateArgument.create(
-				name = "age",
-				value = state.age
-			)
+			MutableStateArgument.create("age", state.age)
 		)
 	}
 
