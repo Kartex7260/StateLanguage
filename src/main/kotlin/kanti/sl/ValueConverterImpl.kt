@@ -7,7 +7,7 @@ class ValueConverterImpl(
 ) : ValueConverter {
 
 	override fun convert(value: Any): String {
-		check(TypeChecker.check(value)) {
+		require(TypeChecker.check(value)) {
 			"Unsupported type: ${value.javaClass.simpleName}"
 		}
 		return value.toString()
