@@ -31,16 +31,16 @@ object TypeChecker {
 	@JvmStatic
 	fun convert(value: Any, type: Type): Any {
 		return when (type) {
-			TypeChecker.Type.Support -> {
+			Type.Support -> {
 				value
 			}
-			TypeChecker.Type.ConvertToInt -> {
+			Type.ConvertToInt -> {
 				value.toString().toInt()
 			}
-			TypeChecker.Type.ConvertToDouble -> {
+			Type.ConvertToDouble -> {
 				value.toString().toDouble()
 			}
-			TypeChecker.Type.Unsupported -> {
+			Type.Unsupported -> {
 				throw IllegalArgumentException("Unsupported type: ${value.javaClass.simpleName}")
 			}
 		}

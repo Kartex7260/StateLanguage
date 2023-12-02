@@ -11,7 +11,7 @@ class MutableStateArgumentsImpl @JvmOverloads constructor(
 
 	init {
 		for (arg in arguments) {
-			argMap.put(arg.name, arg)
+			argMap[arg.name] = arg
 		}
 	}
 

@@ -14,4 +14,13 @@ interface ValueConverter {
 
 	}
 
+	companion object {
+
+		@JvmStatic
+		fun builder(): Builder {
+			return ValueConverterImpl.Builder()
+		}
+
+	}
+
 }

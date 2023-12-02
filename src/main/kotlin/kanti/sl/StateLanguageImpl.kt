@@ -11,8 +11,7 @@ class StateLanguageImpl private constructor(
 		val converter = converters[klass] as StateObjectConverter<State>?
 			?: throw IllegalStateException("Serialize for ${klass.simpleName} not registered!")
 		val deserialized = serializer.deserialize(line)
-		val deserializedState = converter.convert(deserialized)
-		return deserializedState
+		return converter.convert(deserialized)
 	}
 
 	override fun <State> from(klass: Class<State>, obj: State): String {
@@ -47,7 +46,7 @@ class StateLanguageImpl private constructor(
 			return StateLanguageImpl(
 				converters = converterMap,
 				serializer = stateSerializer?.builder()
-					?: StateObjectSerializerImpl.Builder().builder()
+					?: StateObjectSerializer.builder().builder()
 			)
 		}
 	}

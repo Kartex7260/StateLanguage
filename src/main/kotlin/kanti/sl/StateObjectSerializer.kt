@@ -1,6 +1,5 @@
 package kanti.sl
 
-import kanti.sl.objects.MutableStateObject
 import kanti.sl.objects.StateObject
 
 interface StateObjectSerializer {
@@ -20,6 +19,15 @@ interface StateObjectSerializer {
 		fun setValueConverter(builder: ValueConverter.Builder?): Builder
 
 		fun builder(): StateObjectSerializer
+
+	}
+
+	companion object {
+
+		@JvmStatic
+		fun builder(): Builder {
+			return StateObjectSerializerImpl.Builder()
+		}
 
 	}
 

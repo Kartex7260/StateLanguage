@@ -18,12 +18,12 @@ class StateObjectSerializerImpl(
 		sb.append(name)
 		if (args.isNotEmpty()) {
 			sb.append(nameArgsSeparator)
-			for (index in 0..args.size) {
+			for (index in args.indices) {
 				val arg = args[index]
 				sb.append(arg.name)
 					.append(keyValueSeparator)
 					.append(valueConverter.convert(arg.value))
-				if (index != args.size)
+				if (index != args.size - 1)
 					sb.append(argsSeparator)
 			}
 		}
@@ -96,7 +96,7 @@ class StateObjectSerializerImpl(
 				nameArgsSeparator = nameArgsSeparator ?: defaultNameArgsSeparator,
 				argsSeparator = argsSeparator ?: defaultArgsSeparator,
 				keyValueSeparator = keyValueSeparator ?: defaultKeyValueSeparator,
-				valueConverter = (valueConverterBuilder ?: ValueConverterImpl.Builder()).build()
+				valueConverter = (valueConverterBuilder ?: ValueConverter.builder()).build()
 			)
 		}
 
