@@ -35,7 +35,7 @@ class StateLanguageImpl private constructor(
 			return this
 		}
 
-		override fun setStateObjectConverter(
+		override fun setObjectSerializer(
 			converter: StateObjectSerializer.Builder?
 		): StateLanguage.Builder {
 			stateSerializer = converter
