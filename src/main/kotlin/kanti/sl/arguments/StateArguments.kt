@@ -1,7 +1,18 @@
 package kanti.sl.arguments
 
-interface StateArguments {
+interface StateArguments : Iterable<StateArgument> {
 
-	fun get(key: String): StateArgument
+	operator fun get(key: String): StateArgument?
+
+	companion object {
+
+		@JvmStatic
+		fun create(vararg stateArgument: StateArgument): StateArguments {
+			return StateArgumentsImpl(
+				arguments = stateArgument.asIterable()
+			)
+		}
+
+	}
 
 }

@@ -7,4 +7,15 @@ interface MutableStateArguments : StateArguments {
 
 	fun put(argument: StateArgument)
 
+	companion object {
+
+		@JvmStatic
+		fun create(vararg argument: StateArgument): MutableStateArguments {
+			return MutableStateArgumentsImpl(
+				arguments = argument.asIterable()
+			)
+		}
+
+	}
+
 }
