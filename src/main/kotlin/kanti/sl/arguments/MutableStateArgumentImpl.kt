@@ -15,7 +15,8 @@ class MutableStateArgumentImpl @JvmOverloads constructor(
 			return v
 		}
 		set(value) {
-			_value = value
+			val checkedType = TypeChecker.getType(value)
+			_value = TypeChecker.convert(value, checkedType)
 		}
 
 }
