@@ -13,7 +13,7 @@ interface StateLanguage {
 			serializer: StateObjectConverter<State>
 		): Builder
 
-		fun setStateObjectConverter(converter: StateObjectSerializer.Builder?): Builder
+		fun setObjectSerializer(converter: StateObjectSerializer.Builder?): Builder
 
 		fun build(): StateLanguage
 

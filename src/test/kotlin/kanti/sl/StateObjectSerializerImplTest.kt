@@ -5,11 +5,9 @@ import kanti.sl.objects.StateObject
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.Assertions.*
-
 class StateObjectSerializerImplTest {
 
-	private val serializer: StateObjectSerializer = StateObjectSerializer.builder().builder()
+	private val serializer: StateObjectSerializer = StateObjectSerializer.build().build()
 
 	@Test
 	fun serialize() {
