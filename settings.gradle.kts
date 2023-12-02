@@ -10,3 +10,4 @@ plugins {
 }
 
 rootProject.name = "StateLanguage"
+include("StateLanguage-KTX")

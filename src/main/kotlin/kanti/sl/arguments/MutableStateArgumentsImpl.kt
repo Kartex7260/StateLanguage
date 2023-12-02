@@ -1,6 +1,6 @@
 package kanti.sl.arguments
 
-class MutableStateArgumentsImpl(
+class MutableStateArgumentsImpl @JvmOverloads constructor(
 	arguments: Iterable<MutableStateArgument> = listOf()
 ) : MutableStateArguments {
 

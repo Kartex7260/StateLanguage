@@ -2,6 +2,19 @@ package kanti.sl.objects
 
 interface StateObjects {
 
-	fun get(name: String): StateObject
+	val objects: List<StateObject>
+
+	operator fun get(name: String): StateObject?
+
+	companion object {
+
+		@JvmStatic
+		fun create(vararg obj: StateObject): StateObjects {
+			return StateObjectsImpl(
+				objects = obj.asIterable()
+			)
+		}
+
+	}
 
 }
