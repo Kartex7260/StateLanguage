@@ -1,20 +1,28 @@
 package kanti.sl
 
 import kanti.sl.arguments.StateArgument
+import kanti.sl.arguments.values.SupportedValues
 import kanti.sl.objects.StateObject
+import kanti.sl.std.BaseContext
+import kanti.sl.std.BooleanValue
+import kanti.sl.std.DoubleValue
+import kanti.sl.std.IntValue
+import kanti.sl.std.StringValue
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class StateObjectSerializerImplTest {
 
-	private val serializer: StateObjectSerializer = StateObjectSerializer.builder().build()
+	private val serializer: StateObjectSerializer = StateObjectSerializer.builder()
+		.setContext(BaseContext.getBuilder().build())
+		.build()
 
 	@Test
 	fun serialize() {
 		val stg = serializer.serialize(
-			StateObject.create("Test", *arrayOf(
-					StateArgument.create("isSuccess", true),
-					StateArgument.create("amount", 100.3)
+			StateObject.create(serializer.context, "Test", *arrayOf(
+					StateArgument.create(serializer.context, "isSuccess", true),
+					StateArgument.create(serializer.context, "amount", 100.3)
 				)
 			)
 		)

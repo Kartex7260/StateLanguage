@@ -39,12 +39,8 @@ private object UserObjectConverter : StateObjectConverter {
 	override fun convert(arguments: MutableStateArguments, state: Any) {
 		if (state !is User)
 			return
-		arguments.put(
-			MutableStateArgument.create("name", state.name)
-		)
-		arguments.put(
-			MutableStateArgument.create("age", state.age)
-		)
+		arguments.put( "name", state.name)
+		arguments.put("age", state.age)
 	}
 
 	override fun convert(arguments: StateArguments): User {
