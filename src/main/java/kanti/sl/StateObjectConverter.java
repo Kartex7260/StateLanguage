@@ -2,11 +2,13 @@ package kanti.sl;
 
 import kanti.sl.arguments.MutableStateArguments;
 import kanti.sl.arguments.StateArguments;
+import org.jetbrains.annotations.NotNull;
 
 public interface StateObjectConverter {
 
-	void convert(MutableStateArguments args, Object state);
+	void convert(@NotNull MutableStateArguments args, @NotNull Object state);
 
-	Object convert(StateArguments args);
+	@NotNull
+	Object convert(@NotNull StateArguments args);
 
 }

@@ -32,33 +32,10 @@ public interface StateLanguage extends SLContextOwner {
 		);
 
 		@NotNull
-		Builder setObjectSerializer(@NotNull StateObjectSerializer.Builder objSerializer);
-
-		@NotNull
 		Builder setDefaultObjectConverter(@NotNull StateObjectConverter converter);
 
 		@NotNull
 		Builder setContext(@NotNull SLContext.Builder contextBuilder);
-
-		@NotNull
-		Builder setDefaultSupportedValue(
-			@NotNull SupportedValue supportedValue
-		);
-
-		@NotNull
-		Builder registerSupportedValue(@NotNull SupportedValue supportedValue);
-
-		@NotNull
-		Builder registerValueNormalizer(
-			@NotNull Class<?> from,
-			@NotNull ValueNormalizer converter
-		);
-
-		@NotNull
-		Builder unregisterSupportedValue(@NotNull Class<?> type);
-
-		@NotNull
-		Builder unregisterValueNormalizer(@NotNull Class<?> type);
 
 		@NotNull
 		StateLanguage build();
@@ -69,18 +46,15 @@ public interface StateLanguage extends SLContextOwner {
 class StateLanguageImpl implements StateLanguage {
 
 	private final Map<Class<?>, StateObjectConverter> converterMap;
-	private final StateObjectSerializer stateSerializer;
 	private final StateObjectConverter defaultObjectConverter;
 	private final SLContext context;
 
 	StateLanguageImpl(
 		@NotNull Map<Class<?>, StateObjectConverter> converterMap,
-		@NotNull StateObjectSerializer stateSerializer,
 		@NotNull StateObjectConverter defaultObjectConverter,
 		@NotNull SLContext context
 	) {
 		this.converterMap = converterMap;
-		this.stateSerializer = stateSerializer;
 		this.defaultObjectConverter = defaultObjectConverter;
 		this.context = context;
 	}
@@ -88,24 +62,26 @@ class StateLanguageImpl implements StateLanguage {
 	@NotNull
 	@Override
 	public Object parse(@NotNull Class<?> type, @NotNull String line) {
+		StateObjectSerializer serializer = context.getStateObjectSerializer();
 		StateObjectConverter converter = converterMap.get(type);
 		if (converter == null)
 			converter = defaultObjectConverter;
 
-		StateObject deserializedObject = stateSerializer.deserialize(line);
+		StateObject deserializedObject = serializer.deserialize(line);
 		return converter.convert(deserializedObject.getArguments());
 	}
 
 	@NotNull
 	@Override
 	public String from(@NotNull Class<?> type, @NotNull Object obj) {
+		StateObjectSerializer serializer = context.getStateObjectSerializer();
 		StateObjectConverter converter = converterMap.get(type);
 		if (converter == null)
 			converter = defaultObjectConverter;
 
 		MutableStateObject mutableObject = MutableStateObject.create(context, type.getSimpleName());
 		converter.convert(mutableObject.getArguments(), obj);
-		return stateSerializer.serialize(mutableObject);
+		return serializer.serialize(mutableObject);
 	}
 
 	@NotNull
@@ -116,13 +92,12 @@ class StateLanguageImpl implements StateLanguage {
 
 	public static class Builder implements StateLanguage.Builder {
 
+		@NotNull
 		private final Map<Class<?>, StateObjectConverter> converterMap = new HashMap<>();
-		private StateObjectSerializer.Builder stateSerializerBuilder = StateObjectSerializer.builder();
+		@NotNull
 		private StateObjectConverter defObjectConverter = new ReflectionObjectConverter();
-
-		private SLContext.Builder contextBuilder = null;
-
-		private final SupportedValues.Builder supportedValuesBuilder = BaseContext.baseSupportedValues();
+		@NotNull
+		private SLContext.Builder contextBuilder = BaseContext.getBuilder();
 
 		@NotNull
 		@Override
@@ -131,15 +106,6 @@ class StateLanguageImpl implements StateLanguage {
 			@NotNull StateObjectConverter objConverter
 		) {
 			converterMap.put(type, objConverter);
-			return this;
-		}
-
-		@NotNull
-		@Override
-		public StateLanguage.Builder setObjectSerializer(
-			@NotNull StateObjectSerializer.Builder objSerializer
-		) {
-			stateSerializerBuilder = objSerializer;
 			return this;
 		}
 
@@ -161,56 +127,11 @@ class StateLanguageImpl implements StateLanguage {
 
 		@NotNull
 		@Override
-		public StateLanguage.Builder setDefaultSupportedValue(@NotNull SupportedValue supportedValue) {
-			supportedValuesBuilder.setDefaultSupportedValue(supportedValue);
-			return this;
-		}
-
-		@NotNull
-		@Override
-		public StateLanguage.Builder registerSupportedValue(@NotNull SupportedValue supportedValue) {
-			supportedValuesBuilder.registerSupportedValue(supportedValue);
-			return this;
-		}
-
-		@NotNull
-		@Override
-		public StateLanguage.Builder registerValueNormalizer(@NotNull Class<?> from, @NotNull ValueNormalizer converter) {
-			supportedValuesBuilder.registerValueNormalizer(from, converter);
-			return this;
-		}
-
-		@NotNull
-		@Override
-		public StateLanguage.Builder unregisterSupportedValue(@NotNull Class<?> type) {
-			supportedValuesBuilder.unregisterSupportedValue(type);
-			return this;
-		}
-
-		@NotNull
-		@Override
-		public StateLanguage.Builder unregisterValueNormalizer(@NotNull Class<?> type) {
-			supportedValuesBuilder.unregisterValueNormalizer(type);
-			return this;
-		}
-
-		@NotNull
-		@Override
 		public StateLanguage build() {
-			if (contextBuilder == null) {
-				contextBuilder = SLContext.builder()
-					.setSupportedValues(supportedValuesBuilder);
-			}
-			SLContext context = contextBuilder.build();
-			StateObjectSerializer stateObjectSerializer = stateSerializerBuilder
-				.setContext(context)
-				.build();
-
 			return new StateLanguageImpl(
 				converterMap,
-				stateObjectSerializer,
 				defObjectConverter,
-				context
+				contextBuilder.build()
 			);
 		}
 
