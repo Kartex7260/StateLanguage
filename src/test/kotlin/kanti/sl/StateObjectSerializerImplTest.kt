@@ -27,14 +27,14 @@ class StateObjectSerializerImplTest {
 			)
 		)
 		Assertions.assertEquals(
-			"Test:isSuccess=true,amount=100.3",
+			"Test:isSuccess=BOOLEAN-true,amount=DOUBLE-100.3",
 			stg
 		)
 	}
 
 	@Test
 	fun deserialize() {
-		val line = "Test:isSuccess=true,amount=100.3"
+		val line = "Test:isSuccess=BOOLEAN-true,amount=DOUBLE-100.3"
 		val obj = serializer.deserialize(line)
 		Assertions.assertEquals("Test", obj.name)
 

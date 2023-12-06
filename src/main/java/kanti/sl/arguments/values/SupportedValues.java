@@ -1,13 +1,15 @@
 package kanti.sl.arguments.values;
 
+import kanti.sl.SLContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public interface SupportedValues {
+
+	@NotNull
+	String getPrefixValueSeparator();
 
 	@Nullable
 	SupportedValue getType(@NotNull Class<?> type);
@@ -31,16 +33,25 @@ public interface SupportedValues {
 	@NotNull
 	SupportedValue determineValueType(@NotNull String line);
 
+	@NotNull
+	String getCleanPrefix(@NotNull String line);
+
+	@NotNull
+	String getCleanLine(@NotNull String line);
+
 	interface Builder {
 
 		@NotNull
+		Builder setPrefixValueSeparator(@NotNull String separator);
+
+		@NotNull
 		Builder setDefaultSupportedValue(
-			@NotNull SupportedValue supportedValue
+			@NotNull SupportedValue.Builder supportedValue
 		);
 
 		@NotNull
 		Builder registerSupportedValue(
-			@NotNull SupportedValue supportedValue
+			@NotNull SupportedValue.Builder supportedValue
 		);
 
 		@NotNull
@@ -50,14 +61,7 @@ public interface SupportedValues {
 		);
 
 		@NotNull
-		Builder unregisterSupportedValue(
-			@NotNull Class<?> type
-		);
-
-		@NotNull
-		Builder unregisterValueNormalizer(
-			@NotNull Class<?> type
-		);
+		Builder setContext(@NotNull SLContext context);
 
 		@NotNull
 		SupportedValues build();
@@ -73,20 +77,31 @@ public interface SupportedValues {
 
 class SupportedValuesImpl implements SupportedValues {
 
+	private final String prefixValueSeparator;
+
 	private final Map<Class<?>, SupportedValue> valueMap;
 	private final Map<Class<?>, ValueNormalizer> normalizerMap;
 
 	private final SupportedValue defaultSupportedValue;
 
 	SupportedValuesImpl(
+		@NotNull String prefixValueSeparator,
 		@NotNull Map<Class<?>, SupportedValue> valueMap,
 		@NotNull Map<Class<?>, ValueNormalizer> normalizerMap,
 		@NotNull SupportedValue defaultSupportedValue
 	) {
+		this.prefixValueSeparator = prefixValueSeparator;
+
 		this.valueMap = valueMap;
 		this.normalizerMap = normalizerMap;
 
 		this.defaultSupportedValue = defaultSupportedValue;
+	}
+
+	@NotNull
+	@Override
+	public String getPrefixValueSeparator() {
+		return prefixValueSeparator;
 	}
 
 	@Nullable
@@ -168,31 +183,69 @@ class SupportedValuesImpl implements SupportedValues {
 	@NotNull
 	@Override
 	public SupportedValue determineValueType(@NotNull String line) {
+		String cleanPrefix = getCleanPrefix(line);
 		for (SupportedValue supportedValue : valueMap.values()) {
-			if (supportedValue.isThis(line))
+			if (supportedValue.getPrefix().equals(cleanPrefix))
 				return supportedValue;
 		}
 		throw new IllegalStateException("Unsupported value type");
 	}
 
+	@NotNull
+	public String getCleanPrefix(@NotNull String line) {
+		String[] separated = line.split(prefixValueSeparator);
+		if (separated.length < 2)
+			throw new IllegalArgumentException("Invalid line = " + line);
+		return separated[0];
+	}
+
+	@NotNull
+	public String getCleanLine(@NotNull String line) {
+		String[] separated = line.split(prefixValueSeparator);
+		if (separated.length < 2)
+			throw new IllegalArgumentException("Invalid line = " + line);
+		return separated[1];
+	}
+
 	static class Builder implements SupportedValues.Builder {
 
+		@NotNull
+		private final List<SupportedValue.Builder> valueBuilderMap = new ArrayList<>();
+		@NotNull
 		private final Map<Class<?>, SupportedValue> valueMap = new LinkedHashMap<>();
+		@NotNull
 		private final Map<Class<?>, ValueNormalizer> normalizerMap = new LinkedHashMap<>();
 
-		private SupportedValue defaultSupportedValue = SupportedValue.builder().build();
+		@NotNull
+		private SupportedValue.Builder defaultSupportedValue = SupportedValue.builder()
+			.setType(Class.class)
+			.setPrefix("CLASS");
+		@Nullable
+		private SLContext context = null;
+
+		@NotNull
+		private String prefixValueSeparator = "-";
 
 		@NotNull
 		@Override
-		public SupportedValues.Builder registerSupportedValue(@NotNull SupportedValue supportedValue) {
-			valueMap.put(supportedValue.getType(), supportedValue);
+		public SupportedValues.Builder setPrefixValueSeparator(@NotNull String separator) {
+			prefixValueSeparator = separator;
+			return this;
+		}
+
+		@NotNull
+		@Override
+		public SupportedValues.Builder registerSupportedValue(
+			@NotNull SupportedValue.Builder supportedValue
+		) {
+			valueBuilderMap.add(supportedValue);
 			return this;
 		}
 
 		@NotNull
 		@Override
 		public SupportedValues.Builder setDefaultSupportedValue(
-			@NotNull SupportedValue supportedValue
+			@NotNull SupportedValue.Builder supportedValue
 		) {
 			defaultSupportedValue = supportedValue;
 			return this;
@@ -210,24 +263,29 @@ class SupportedValuesImpl implements SupportedValues {
 
 		@NotNull
 		@Override
-		public SupportedValues.Builder unregisterSupportedValue(@NotNull Class<?> type) {
-			valueMap.remove(type);
-			return this;
-		}
-
-		@NotNull
-		@Override
-		public SupportedValues.Builder unregisterValueNormalizer(@NotNull Class<?> type) {
-			normalizerMap.remove(type);
+		public SupportedValues.Builder setContext(@NotNull SLContext context) {
+			this.context = context;
 			return this;
 		}
 
 		@NotNull
 		@Override
 		public SupportedValues build() {
+			if (context == null)
+				throw new IllegalStateException("Context not initialized");
+
+			for (SupportedValue.Builder builder : valueBuilderMap) {
+				SupportedValue supportedValue = builder
+					.setContext(context)
+					.build();
+				valueMap.put(supportedValue.getType(), supportedValue);
+			}
 			return new SupportedValuesImpl(
+				prefixValueSeparator,
 				valueMap, normalizerMap,
 				defaultSupportedValue
+					.setContext(context)
+					.build()
 			);
 		}
 

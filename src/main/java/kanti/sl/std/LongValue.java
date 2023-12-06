@@ -1,21 +1,23 @@
 package kanti.sl.std;
 
-import kanti.sl.arguments.values.*;
+import kanti.sl.arguments.values.SupportedValue;
+import kanti.sl.arguments.values.ValueCheckable;
+import kanti.sl.arguments.values.ValueSerializer;
 import org.jetbrains.annotations.NotNull;
 
-public final class BooleanValue {
+public final class LongValue {
 
 	@NotNull
 	public static SupportedValue.Builder getSupportedValue() {
-		return SupportedValue.builder(Boolean.class)
-			.setPrefix("BOOLEAN")
-			.setSerializer(new BooleanSerializer())
-			.setCheckable(new BooleanCheckable());
+		return SupportedValue.builder(Long.class)
+			.setPrefix("LONG")
+			.setSerializer(new LongSerializer())
+			.setCheckable(new LongCheckable());
 	}
 
 }
 
-class BooleanSerializer implements ValueSerializer {
+class LongSerializer implements ValueSerializer {
 
 	@NotNull
 	@Override
@@ -26,12 +28,12 @@ class BooleanSerializer implements ValueSerializer {
 	@NotNull
 	@Override
 	public Object deserialize(@NotNull String line) {
-		return Boolean.parseBoolean(line);
+		return Long.parseLong(line);
 	}
 
 }
 
-class BooleanCheckable implements ValueCheckable {
+class LongCheckable implements ValueCheckable {
 
 	@Override
 	public boolean check(@NotNull Object value) {
@@ -41,9 +43,9 @@ class BooleanCheckable implements ValueCheckable {
 	@Override
 	public boolean check(@NotNull Class<?> type) {
 		if (type.isPrimitive()) {
-			return type.equals(boolean.class);
+			return type.equals(long.class);
 		} else {
-			return type.equals(Boolean.class);
+			return type.equals(Long.class);
 		}
 	}
 

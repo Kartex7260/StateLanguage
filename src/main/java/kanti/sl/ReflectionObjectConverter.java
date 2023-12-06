@@ -1,18 +1,17 @@
 package kanti.sl;
 
-import kanti.sl.annotations.Argument;
-import kanti.sl.annotations.Ignore;
-import kanti.sl.annotations.Select;
+import kanti.sl.std.annotations.Argument;
+import kanti.sl.std.annotations.Ignore;
+import kanti.sl.std.annotations.Select;
 import kanti.sl.arguments.MutableStateArguments;
 import kanti.sl.arguments.StateArgument;
 import kanti.sl.arguments.StateArguments;
 import kanti.sl.arguments.values.SupportedValues;
+import kanti.sl.std.BaseStateObjectConverter;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.*;
 import java.util.*;
-import java.util.function.Consumer;
 
 public class ReflectionObjectConverter extends BaseStateObjectConverter {
 

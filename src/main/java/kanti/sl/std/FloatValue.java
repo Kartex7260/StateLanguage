@@ -1,21 +1,23 @@
 package kanti.sl.std;
 
-import kanti.sl.arguments.values.*;
+import kanti.sl.arguments.values.SupportedValue;
+import kanti.sl.arguments.values.ValueCheckable;
+import kanti.sl.arguments.values.ValueSerializer;
 import org.jetbrains.annotations.NotNull;
 
-public final class BooleanValue {
+public class FloatValue {
 
 	@NotNull
 	public static SupportedValue.Builder getSupportedValue() {
-		return SupportedValue.builder(Boolean.class)
-			.setPrefix("BOOLEAN")
-			.setSerializer(new BooleanSerializer())
-			.setCheckable(new BooleanCheckable());
+		return SupportedValue.builder(Float.class)
+			.setPrefix("FLOAT")
+			.setSerializer(new FloatSerializer())
+			.setCheckable(new FloatCheckable());
 	}
 
 }
 
-class BooleanSerializer implements ValueSerializer {
+class FloatSerializer implements ValueSerializer {
 
 	@NotNull
 	@Override
@@ -26,12 +28,12 @@ class BooleanSerializer implements ValueSerializer {
 	@NotNull
 	@Override
 	public Object deserialize(@NotNull String line) {
-		return Boolean.parseBoolean(line);
+		return Float.parseFloat(line);
 	}
 
 }
 
-class BooleanCheckable implements ValueCheckable {
+class FloatCheckable implements ValueCheckable {
 
 	@Override
 	public boolean check(@NotNull Object value) {
@@ -41,9 +43,9 @@ class BooleanCheckable implements ValueCheckable {
 	@Override
 	public boolean check(@NotNull Class<?> type) {
 		if (type.isPrimitive()) {
-			return type.equals(boolean.class);
+			return type.equals(float.class);
 		} else {
-			return type.equals(Boolean.class);
+			return type.equals(Float.class);
 		}
 	}
 

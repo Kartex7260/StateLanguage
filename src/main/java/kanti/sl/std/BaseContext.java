@@ -15,14 +15,14 @@ public final class BaseContext {
 	@NotNull
 	public static SupportedValues.Builder baseSupportedValues() {
 		return SupportedValues.builder()
+			.registerSupportedValue(ByteValue.getSupportedValue())
 			.registerSupportedValue(BooleanValue.getSupportedValue())
+			.registerSupportedValue(ShortValue.getSupportedValue())
 			.registerSupportedValue(IntValue.getSupportedValue())
+			.registerSupportedValue(LongValue.getSupportedValue())
+			.registerSupportedValue(FloatValue.getSupportedValue())
 			.registerSupportedValue(DoubleValue.getSupportedValue())
-			.registerSupportedValue(StringValue.getSupportedValue())
-			.registerValueNormalizer(Byte.class, new ByteNormalizer())
-			.registerValueNormalizer(Short.class, new ShortNormalizer())
-			.registerValueNormalizer(Long.class, new LongNormalizer())
-			.registerValueNormalizer(Float.class, new FloatNormalizer());
+			.registerSupportedValue(StringValue.getSupportedValue());
 	}
 
 }

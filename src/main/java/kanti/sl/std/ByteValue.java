@@ -3,19 +3,19 @@ package kanti.sl.std;
 import kanti.sl.arguments.values.*;
 import org.jetbrains.annotations.NotNull;
 
-public final class BooleanValue {
+public final class ByteValue {
 
 	@NotNull
 	public static SupportedValue.Builder getSupportedValue() {
-		return SupportedValue.builder(Boolean.class)
-			.setPrefix("BOOLEAN")
-			.setSerializer(new BooleanSerializer())
-			.setCheckable(new BooleanCheckable());
+		return SupportedValue.builder(Byte.class)
+			.setPrefix("BYTE")
+			.setSerializer(new ByteSerializer())
+			.setCheckable(new ByteCheckable());
 	}
 
 }
 
-class BooleanSerializer implements ValueSerializer {
+class ByteSerializer implements ValueSerializer {
 
 	@NotNull
 	@Override
@@ -26,12 +26,12 @@ class BooleanSerializer implements ValueSerializer {
 	@NotNull
 	@Override
 	public Object deserialize(@NotNull String line) {
-		return Boolean.parseBoolean(line);
+		return Byte.parseByte(line);
 	}
 
 }
 
-class BooleanCheckable implements ValueCheckable {
+class ByteCheckable implements ValueCheckable {
 
 	@Override
 	public boolean check(@NotNull Object value) {
@@ -41,9 +41,9 @@ class BooleanCheckable implements ValueCheckable {
 	@Override
 	public boolean check(@NotNull Class<?> type) {
 		if (type.isPrimitive()) {
-			return type.equals(boolean.class);
+			return type.equals(byte.class);
 		} else {
-			return type.equals(Boolean.class);
+			return type.equals(Byte.class);
 		}
 	}
 

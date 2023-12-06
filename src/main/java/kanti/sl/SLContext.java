@@ -56,7 +56,9 @@ class SLContextImpl implements SLContext {
 	@Override
 	public SupportedValues getSupportedValues() {
 		if (supportedValues == null) {
-			supportedValues = supportedValuesBuilder.build();
+			supportedValues = supportedValuesBuilder
+				.setContext(this)
+				.build();
 		}
 		return supportedValues;
 	}
@@ -66,7 +68,8 @@ class SLContextImpl implements SLContext {
 	public StateObjectSerializer getStateObjectSerializer() {
 		if (objectSerializer == null) {
 			objectSerializer = objectSerializerBuilder
-				.setContext(this).build();
+				.setContext(this)
+				.build();
 		}
 		return objectSerializer;
 	}

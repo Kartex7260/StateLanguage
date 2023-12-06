@@ -1,6 +1,6 @@
 package kanti.sl;
 
-import kanti.sl.annotations.Argument;
+import kanti.sl.std.annotations.Argument;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;

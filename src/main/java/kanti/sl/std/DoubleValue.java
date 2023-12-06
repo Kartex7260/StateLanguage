@@ -5,19 +5,12 @@ import org.jetbrains.annotations.NotNull;
 
 public final class DoubleValue {
 
-	private static SupportedValue _instance = null;
-
 	@NotNull
-	public static SupportedValue getSupportedValue() {
-		if (_instance == null) {
-			_instance = SupportedValue.builder(Double.class)
-				.setLineDeterminant(new DoubleDeterminant())
-				.setSerializer(new DoubleSerializer())
-				.setNormalizer(new DoubleNormalizer())
-				.setCheckable(new DoubleCheckable())
-				.build();
-		}
-		return _instance;
+	public static SupportedValue.Builder getSupportedValue() {
+		return SupportedValue.builder(Double.class)
+			.setPrefix("DOUBLE")
+			.setSerializer(new DoubleSerializer())
+			.setCheckable(new DoubleCheckable());
 	}
 
 }
@@ -34,36 +27,6 @@ class DoubleSerializer implements ValueSerializer {
 	@Override
 	public Object deserialize(@NotNull String line) {
 		return Double.parseDouble(line);
-	}
-
-}
-
-class DoubleDeterminant implements LineDeterminant {
-
-	@Override
-	public boolean isThis(@NotNull String line) {
-		try {
-			Double.parseDouble(line);
-			return true;
-		} catch (NumberFormatException ex) {
-			return false;
-		}
-	}
-
-}
-
-class DoubleNormalizer implements ValueNormalizer {
-
-	@NotNull
-	@Override
-	public Object normalize(@NotNull Object value) {
-		Class<?> type = value.getClass();
-		if (type.equals(Float.class)) {
-			return (Double) value;
-		} else if (type.equals(Double.class)) {
-			return value;
-		}
-		throw new IllegalArgumentException("Unsupported value type=" + type.getName());
 	}
 
 }

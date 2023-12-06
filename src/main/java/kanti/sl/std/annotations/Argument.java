@@ -1,4 +1,4 @@
-package kanti.sl.annotations;
+package kanti.sl.std.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -5,19 +5,19 @@ import kanti.sl.arguments.values.ValueCheckable;
 import kanti.sl.arguments.values.ValueSerializer;
 import org.jetbrains.annotations.NotNull;
 
-public final class StringValue {
+public final class ShortValue {
 
 	@NotNull
 	public static SupportedValue.Builder getSupportedValue() {
-		return SupportedValue.builder(String.class)
-			.setPrefix("STRING")
-			.setSerializer(new StringSerializer())
-			.setCheckable(new StringCheckable());
+		return SupportedValue.builder(Short.class)
+			.setPrefix("SHORT")
+			.setSerializer(new ShortSerializer())
+			.setCheckable(new ShortCheckable());
 	}
 
 }
 
-class StringSerializer implements ValueSerializer {
+class ShortSerializer implements ValueSerializer {
 
 	@NotNull
 	@Override
@@ -28,12 +28,12 @@ class StringSerializer implements ValueSerializer {
 	@NotNull
 	@Override
 	public Object deserialize(@NotNull String line) {
-		return line;
+		return Short.parseShort(line);
 	}
 
 }
 
-class StringCheckable implements ValueCheckable {
+class ShortCheckable implements ValueCheckable {
 
 	@Override
 	public boolean check(@NotNull Object value) {
@@ -42,7 +42,11 @@ class StringCheckable implements ValueCheckable {
 
 	@Override
 	public boolean check(@NotNull Class<?> type) {
-		return type.equals(String.class);
+		if (type.isPrimitive()) {
+			return type.equals(short.class);
+		} else {
+			return type.equals(Short.class);
+		}
 	}
 
 }
