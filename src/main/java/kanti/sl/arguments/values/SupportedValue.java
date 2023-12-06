@@ -9,6 +9,8 @@ public interface SupportedValue {
 
 	boolean check(@NotNull Object value);
 
+	boolean check(@NotNull Class<?> type);
+
 	@NotNull
 	Object normalize(@NotNull Object value);
 
@@ -92,6 +94,11 @@ class SupportedValueImpl implements SupportedValue {
 	@Override
 	public boolean check(@NotNull Object value) {
 		return checkable.check(value);
+	}
+
+	@Override
+	public boolean check(@NotNull Class<?> type) {
+		return checkable.check(type);
 	}
 
 	@NotNull

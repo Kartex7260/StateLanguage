@@ -6,6 +6,8 @@ public interface ValueCheckable {
 
 	boolean check(@NotNull Object value);
 
+	boolean check(@NotNull Class<?> type);
+
 	@NotNull
 	static ValueCheckable create(@NotNull Class<?> type) {
 		return new ValueCheckableImpl(type);
@@ -24,6 +26,11 @@ class ValueCheckableImpl implements ValueCheckable {
 	@Override
 	public boolean check(@NotNull Object value) {
 		return type.equals(value.getClass());
+	}
+
+	@Override
+	public boolean check(@NotNull Class<?> type) {
+		return this.type.equals(type);
 	}
 
 }

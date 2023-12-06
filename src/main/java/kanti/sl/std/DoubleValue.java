@@ -1,9 +1,6 @@
 package kanti.sl.std;
 
-import kanti.sl.arguments.values.LineDeterminant;
-import kanti.sl.arguments.values.SupportedValue;
-import kanti.sl.arguments.values.ValueNormalizer;
-import kanti.sl.arguments.values.ValueSerializer;
+import kanti.sl.arguments.values.*;
 import org.jetbrains.annotations.NotNull;
 
 public final class DoubleValue {
@@ -17,6 +14,7 @@ public final class DoubleValue {
 				.setLineDeterminant(new DoubleDeterminant())
 				.setSerializer(new DoubleSerializer())
 				.setNormalizer(new DoubleNormalizer())
+				.setCheckable(new DoubleCheckable())
 				.build();
 		}
 		return _instance;
@@ -66,6 +64,24 @@ class DoubleNormalizer implements ValueNormalizer {
 			return value;
 		}
 		throw new IllegalArgumentException("Unsupported value type=" + type.getName());
+	}
+
+}
+
+class DoubleCheckable implements ValueCheckable {
+
+	@Override
+	public boolean check(@NotNull Object value) {
+		return check(value.getClass());
+	}
+
+	@Override
+	public boolean check(@NotNull Class<?> type) {
+		if (type.isPrimitive()) {
+			return type.equals(double.class);
+		} else {
+			return type.equals(Double.class);
+		}
 	}
 
 }

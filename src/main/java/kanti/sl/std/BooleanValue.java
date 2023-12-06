@@ -13,6 +13,7 @@ public final class BooleanValue {
 			_instance = SupportedValue.builder(Boolean.class)
 				.setLineDeterminant(new BooleanLineDeterminant())
 				.setSerializer(new BooleanSerializer())
+				.setCheckable(new BooleanCheckable())
 				.build();
 		}
 		return _instance;
@@ -41,6 +42,24 @@ class BooleanSerializer implements ValueSerializer {
 	@Override
 	public Object deserialize(@NotNull String line) {
 		return Boolean.parseBoolean(line);
+	}
+
+}
+
+class BooleanCheckable implements ValueCheckable {
+
+	@Override
+	public boolean check(@NotNull Object value) {
+		return check(value.getClass());
+	}
+
+	@Override
+	public boolean check(@NotNull Class<?> type) {
+		if (type.isPrimitive()) {
+			return type.equals(boolean.class);
+		} else {
+			return type.equals(Boolean.class);
+		}
 	}
 
 }

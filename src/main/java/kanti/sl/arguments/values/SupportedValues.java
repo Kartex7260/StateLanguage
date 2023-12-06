@@ -20,6 +20,8 @@ public interface SupportedValues {
 
 	boolean check(@NotNull Object value);
 
+	boolean isSupported(@NotNull Class<?> type);
+
 	@NotNull
 	String serialize(@NotNull Object value);
 
@@ -125,6 +127,15 @@ class SupportedValuesImpl implements SupportedValues {
 	public boolean check(@NotNull Object value) {
 		for (SupportedValue supportedValue : valueMap.values()) {
 			if (supportedValue.check(value))
+				return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isSupported(@NotNull Class<?> type) {
+		for (SupportedValue supportedValue : valueMap.values()) {
+			if (supportedValue.check(type))
 				return true;
 		}
 		return false;

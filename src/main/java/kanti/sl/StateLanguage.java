@@ -128,10 +128,15 @@ class StateLanguageImpl implements StateLanguage {
 		@NotNull
 		@Override
 		public StateLanguage build() {
+			SLContext context = contextBuilder.build();
+			defObjectConverter.setContext(context);
+			for (StateObjectConverter converter : converterMap.values()) {
+				converter.setContext(context);
+			}
 			return new StateLanguageImpl(
 				converterMap,
 				defObjectConverter,
-				contextBuilder.build()
+				context
 			);
 		}
 

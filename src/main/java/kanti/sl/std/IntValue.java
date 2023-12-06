@@ -1,9 +1,6 @@
 package kanti.sl.std;
 
-import kanti.sl.arguments.values.LineDeterminant;
-import kanti.sl.arguments.values.SupportedValue;
-import kanti.sl.arguments.values.ValueNormalizer;
-import kanti.sl.arguments.values.ValueSerializer;
+import kanti.sl.arguments.values.*;
 import org.jetbrains.annotations.NotNull;
 
 public final class IntValue {
@@ -17,6 +14,7 @@ public final class IntValue {
 				.setLineDeterminant(new IntDeterminant())
 				.setSerializer(new IntSerializer())
 				.setNormalizer(new IntNormalizer())
+				.setCheckable(new IntCheckable())
 				.build();
 		}
 		return _instance;
@@ -69,6 +67,24 @@ class IntNormalizer implements ValueNormalizer {
 			return (int) value;
 		}
 		throw new IllegalArgumentException("Unsupported value type=" + type.getName());
+	}
+
+}
+
+class IntCheckable implements ValueCheckable {
+
+	@Override
+	public boolean check(@NotNull Object value) {
+		return check(value.getClass());
+	}
+
+	@Override
+	public boolean check(@NotNull Class<?> type) {
+		if (type.isPrimitive()) {
+			return type.equals(int.class);
+		} else {
+			return type.equals(Integer.class);
+		}
 	}
 
 }
