@@ -19,6 +19,11 @@ public interface MutableStateArguments extends StateArguments {
 
 	@NotNull MutableStateArgument put(@NotNull String key, @Nullable Object value);
 
+	@Nullable
+	MutableStateArgument remove(@NotNull String key);
+
+	void clear();
+
 	@NotNull
 	static MutableStateArguments create(
 		@NotNull SLContext context,
@@ -63,6 +68,17 @@ class MutableStateArgumentsImpl implements MutableStateArguments {
 		MutableStateArgument argument = MutableStateArgument.create(context, key, value);
 		mapArgs.put(argument.getKey(), argument);
 		return argument;
+	}
+
+	@Nullable
+	@Override
+	public MutableStateArgument remove(@NotNull String key) {
+		return mapArgs.remove(key);
+	}
+
+	@Override
+	public void clear() {
+		mapArgs.clear();
 	}
 
 	@NotNull
