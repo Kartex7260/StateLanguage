@@ -1,10 +1,11 @@
 package kanti.sl.arguments.values;
 
 import kanti.sl.SLContext;
+import kanti.sl.SLContextOwner;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface SupportedValue {
+public interface SupportedValue extends SLContextOwner {
 
 	@NotNull
 	Class<?> getType();
@@ -157,7 +158,11 @@ class SupportedValueImpl implements SupportedValue {
 		return serializer;
 	}
 
-
+	@NotNull
+	@Override
+	public SLContext getContext() {
+		return context;
+	}
 
 	static class Builder implements SupportedValue.Builder {
 

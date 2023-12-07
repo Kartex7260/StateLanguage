@@ -1,12 +1,13 @@
 package kanti.sl.arguments.values;
 
 import kanti.sl.SLContext;
+import kanti.sl.SLContextOwner;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public interface SupportedValues {
+public interface SupportedValues extends SLContextOwner {
 
 	@NotNull
 	String getPrefixValueSeparator();
@@ -83,12 +84,14 @@ class SupportedValuesImpl implements SupportedValues {
 	private final Map<Class<?>, ValueNormalizer> normalizerMap;
 
 	private final SupportedValue defaultSupportedValue;
+	private final SLContext context;
 
 	SupportedValuesImpl(
 		@NotNull String prefixValueSeparator,
 		@NotNull Map<Class<?>, SupportedValue> valueMap,
 		@NotNull Map<Class<?>, ValueNormalizer> normalizerMap,
-		@NotNull SupportedValue defaultSupportedValue
+		@NotNull SupportedValue defaultSupportedValue,
+		@NotNull SLContext context
 	) {
 		this.prefixValueSeparator = prefixValueSeparator;
 
@@ -96,6 +99,7 @@ class SupportedValuesImpl implements SupportedValues {
 		this.normalizerMap = normalizerMap;
 
 		this.defaultSupportedValue = defaultSupportedValue;
+		this.context = context;
 	}
 
 	@NotNull
@@ -207,6 +211,12 @@ class SupportedValuesImpl implements SupportedValues {
 		return separated[1];
 	}
 
+	@NotNull
+	@Override
+	public SLContext getContext() {
+		return context;
+	}
+
 	static class Builder implements SupportedValues.Builder {
 
 		@NotNull
@@ -285,7 +295,8 @@ class SupportedValuesImpl implements SupportedValues {
 				valueMap, normalizerMap,
 				defaultSupportedValue
 					.setContext(context)
-					.build()
+					.build(),
+				context
 			);
 		}
 
