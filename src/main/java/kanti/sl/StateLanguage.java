@@ -1,8 +1,5 @@
 package kanti.sl;
 
-import kanti.sl.arguments.values.SupportedValue;
-import kanti.sl.arguments.values.SupportedValues;
-import kanti.sl.arguments.values.ValueNormalizer;
 import kanti.sl.objects.MutableStateObject;
 import kanti.sl.objects.StateObject;
 import kanti.sl.std.BaseContext;
@@ -14,10 +11,10 @@ import java.util.Map;
 public interface StateLanguage extends SLContextOwner {
 
 	@NotNull
-	Object parse(@NotNull Class<?> type, @NotNull String line);
+	Object deserialize(@NotNull Class<?> type, @NotNull String line);
 
 	@NotNull
-	String from(@NotNull Class<?> type, @NotNull Object obj);
+	String serialize(@NotNull Class<?> type, @NotNull Object obj);
 
 	@NotNull
 	static Builder builder() {
@@ -61,7 +58,7 @@ class StateLanguageImpl implements StateLanguage {
 
 	@NotNull
 	@Override
-	public Object parse(@NotNull Class<?> type, @NotNull String line) {
+	public Object deserialize(@NotNull Class<?> type, @NotNull String line) {
 		StateObjectSerializer serializer = context.getStateObjectSerializer();
 		StateObjectConverter converter = converterMap.get(type);
 		if (converter == null)
@@ -73,7 +70,7 @@ class StateLanguageImpl implements StateLanguage {
 
 	@NotNull
 	@Override
-	public String from(@NotNull Class<?> type, @NotNull Object obj) {
+	public String serialize(@NotNull Class<?> type, @NotNull Object obj) {
 		StateObjectSerializer serializer = context.getStateObjectSerializer();
 		StateObjectConverter converter = converterMap.get(type);
 		if (converter == null)

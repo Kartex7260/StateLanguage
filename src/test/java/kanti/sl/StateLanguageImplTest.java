@@ -10,7 +10,7 @@ public class StateLanguageImplTest {
 	@Test
 	public void parse() {
 		String line = "User:fullClassName=STRING-kanti.sl.User,name=STRING-Jojo,age=INTEGER-1000";
-		User user = (User) sl.parse(User.class, line);
+		User user = (User) sl.deserialize(User.class, line);
 		User expected = new User("Jojo", 1000);
 		Assertions.assertEquals(
 			expected,
@@ -21,7 +21,7 @@ public class StateLanguageImplTest {
 	@Test
 	public void from() {
 		User user = new User("Jojo", 1000);
-		String line = sl.from(User.class, user);
+		String line = sl.serialize(User.class, user);
 		Assertions.assertEquals(
 			"User:fullClassName=STRING-kanti.sl.User,name=STRING-Jojo,age=INTEGER-1000",
 			line
