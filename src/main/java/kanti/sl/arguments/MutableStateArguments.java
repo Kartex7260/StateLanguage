@@ -44,7 +44,7 @@ class MutableStateArgumentsImpl implements MutableStateArguments {
 		@NotNull MutableStateArgument... args
 	) {
 		this.context = context;
-		mapArgs = new HashMap<>();
+		mapArgs = new LinkedHashMap<>();
 		for (MutableStateArgument arg : args) {
 			mapArgs.put(arg.getKey(), arg);
 		}
