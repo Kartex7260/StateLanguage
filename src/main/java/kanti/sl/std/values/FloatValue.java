@@ -1,8 +1,6 @@
-package kanti.sl.std;
+package kanti.sl.std.values;
 
-import kanti.sl.arguments.values.SupportedValue;
-import kanti.sl.arguments.values.ValueCheckable;
-import kanti.sl.arguments.values.ValueSerializer;
+import kanti.sl.arguments.values.*;
 import org.jetbrains.annotations.NotNull;
 
 public class FloatValue {
@@ -17,7 +15,7 @@ public class FloatValue {
 
 }
 
-class FloatSerializer implements ValueSerializer {
+class FloatSerializer extends BaseValueSerializer {
 
 	@NotNull
 	@Override
@@ -33,7 +31,7 @@ class FloatSerializer implements ValueSerializer {
 
 }
 
-class FloatCheckable implements ValueCheckable {
+class FloatCheckable extends BaseValueCheckable {
 
 	@Override
 	public boolean check(@NotNull Object value) {

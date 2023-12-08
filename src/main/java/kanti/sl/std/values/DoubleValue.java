@@ -1,21 +1,21 @@
-package kanti.sl.std;
+package kanti.sl.std.values;
 
 import kanti.sl.arguments.values.*;
 import org.jetbrains.annotations.NotNull;
 
-public final class IntValue {
+public final class DoubleValue {
 
 	@NotNull
 	public static SupportedValue.Builder getSupportedValue() {
-		return SupportedValue.builder(Integer.class)
-			.setPrefix("INTEGER")
-			.setSerializer(new IntSerializer())
-			.setCheckable(new IntCheckable());
+		return SupportedValue.builder(Double.class)
+			.setPrefix("DOUBLE")
+			.setSerializer(new DoubleSerializer())
+			.setCheckable(new DoubleCheckable());
 	}
 
 }
 
-class IntSerializer implements ValueSerializer {
+class DoubleSerializer extends BaseValueSerializer {
 
 	@NotNull
 	@Override
@@ -26,12 +26,12 @@ class IntSerializer implements ValueSerializer {
 	@NotNull
 	@Override
 	public Object deserialize(@NotNull String line) {
-		return Integer.valueOf(line);
+		return Double.parseDouble(line);
 	}
 
 }
 
-class IntCheckable implements ValueCheckable {
+class DoubleCheckable extends BaseValueCheckable {
 
 	@Override
 	public boolean check(@NotNull Object value) {
@@ -41,9 +41,9 @@ class IntCheckable implements ValueCheckable {
 	@Override
 	public boolean check(@NotNull Class<?> type) {
 		if (type.isPrimitive()) {
-			return type.equals(int.class);
+			return type.equals(double.class);
 		} else {
-			return type.equals(Integer.class);
+			return type.equals(Double.class);
 		}
 	}
 

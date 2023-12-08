@@ -1,8 +1,12 @@
 package kanti.sl.arguments.values;
 
+import kanti.sl.SLContext;
+import kanti.sl.SLContextOwner;
 import org.jetbrains.annotations.NotNull;
 
-public interface ValueSerializer {
+public interface ValueSerializer extends SLContextOwner {
+
+	void setContext(@NotNull SLContext context);
 
 	@NotNull
 	String serialize(@NotNull Object value);
@@ -19,7 +23,7 @@ public interface ValueSerializer {
 
 }
 
-class ValueSerializerImpl implements ValueSerializer {
+class ValueSerializerImpl extends BaseValueSerializer {
 
 	@NotNull
 	@Override

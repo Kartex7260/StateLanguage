@@ -1,4 +1,4 @@
-package kanti.sl;
+package kanti.sl.std;
 
 import kanti.sl.std.annotations.Argument;
 import kanti.sl.std.annotations.Ignore;

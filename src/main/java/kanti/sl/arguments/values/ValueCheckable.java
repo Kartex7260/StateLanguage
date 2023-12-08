@@ -1,8 +1,12 @@
 package kanti.sl.arguments.values;
 
+import kanti.sl.SLContext;
+import kanti.sl.SLContextOwner;
 import org.jetbrains.annotations.NotNull;
 
-public interface ValueCheckable {
+public interface ValueCheckable extends SLContextOwner {
+
+	void setContext(@NotNull SLContext context);
 
 	boolean check(@NotNull Object value);
 
@@ -15,7 +19,7 @@ public interface ValueCheckable {
 
 }
 
-class ValueCheckableImpl implements ValueCheckable {
+class ValueCheckableImpl extends BaseValueCheckable {
 
 	private final Class<?> type;
 

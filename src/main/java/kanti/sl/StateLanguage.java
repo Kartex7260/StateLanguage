@@ -3,6 +3,7 @@ package kanti.sl;
 import kanti.sl.objects.MutableStateObject;
 import kanti.sl.objects.StateObject;
 import kanti.sl.std.BaseContext;
+import kanti.sl.std.ReflectionObjectConverter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;

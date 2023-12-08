@@ -1,13 +1,8 @@
 package kanti.sl
 
 import kanti.sl.arguments.StateArgument
-import kanti.sl.arguments.values.SupportedValues
 import kanti.sl.objects.StateObject
 import kanti.sl.std.BaseContext
-import kanti.sl.std.BooleanValue
-import kanti.sl.std.DoubleValue
-import kanti.sl.std.IntValue
-import kanti.sl.std.StringValue
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 

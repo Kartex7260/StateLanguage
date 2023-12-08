@@ -1,8 +1,12 @@
 package kanti.sl.arguments.values;
 
+import kanti.sl.SLContext;
+import kanti.sl.SLContextOwner;
 import org.jetbrains.annotations.NotNull;
 
-public interface ValueNormalizer {
+public interface ValueNormalizer extends SLContextOwner {
+
+	void setContext(@NotNull SLContext context);
 
 	@NotNull
 	Object normalize(@NotNull Object value);
@@ -17,7 +21,7 @@ public interface ValueNormalizer {
 
 }
 
-class ValueNormalizerImpl implements ValueNormalizer {
+class ValueNormalizerImpl extends BaseValueNormalizer {
 
 	@NotNull
 	@Override

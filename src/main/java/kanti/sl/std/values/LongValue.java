@@ -1,8 +1,6 @@
-package kanti.sl.std;
+package kanti.sl.std.values;
 
-import kanti.sl.arguments.values.SupportedValue;
-import kanti.sl.arguments.values.ValueCheckable;
-import kanti.sl.arguments.values.ValueSerializer;
+import kanti.sl.arguments.values.*;
 import org.jetbrains.annotations.NotNull;
 
 public final class LongValue {
@@ -17,7 +15,7 @@ public final class LongValue {
 
 }
 
-class LongSerializer implements ValueSerializer {
+class LongSerializer extends BaseValueSerializer {
 
 	@NotNull
 	@Override
@@ -33,7 +31,7 @@ class LongSerializer implements ValueSerializer {
 
 }
 
-class LongCheckable implements ValueCheckable {
+class LongCheckable extends BaseValueCheckable {
 
 	@Override
 	public boolean check(@NotNull Object value) {

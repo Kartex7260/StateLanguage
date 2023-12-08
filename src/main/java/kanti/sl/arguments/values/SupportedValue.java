@@ -235,6 +235,11 @@ class SupportedValueImpl implements SupportedValue {
 			}
 			if (prefix == null)
 				prefix = type.getName();
+
+			checkable.setContext(context);
+			converter.setContext(context);
+			serializer.setContext(context);
+
 			return new SupportedValueImpl(
 				prefix,
 				type,

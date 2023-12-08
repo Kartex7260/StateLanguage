@@ -1,4 +1,4 @@
-package kanti.sl.std;
+package kanti.sl.std.values;
 
 import kanti.sl.arguments.values.*;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +15,7 @@ public final class BooleanValue {
 
 }
 
-class BooleanSerializer implements ValueSerializer {
+class BooleanSerializer extends BaseValueSerializer {
 
 	@NotNull
 	@Override
@@ -31,7 +31,7 @@ class BooleanSerializer implements ValueSerializer {
 
 }
 
-class BooleanCheckable implements ValueCheckable {
+class BooleanCheckable extends BaseValueCheckable {
 
 	@Override
 	public boolean check(@NotNull Object value) {
