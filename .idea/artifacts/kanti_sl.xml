@@ -3,7 +3,6 @@
     <output-path>$PROJECT_DIR$/out/artifacts/kanti_sl</output-path>
     <root id="archive" name="kanti.sl.jar">
       <element id="module-output" name="StateLanguage.main" />
-      <element id="library" level="project" name="Gradle: org.jetbrains:annotations:13.0" />
     </root>
   </artifact>
 </component>
